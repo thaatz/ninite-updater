@@ -1,23 +1,30 @@
 @echo off
 REM cd /d "%~dp0"
-
+:: ========================================
 :: ninite location
 set ninite=%userprofile%\desktop\programs\ninite.exe
-:: folder where you want to move the shortcuts
-set folder=%userprofile%\desktop\Pro grams
+:: folder where you want to move the shortcuts. No quotes or trailing backslash needed.
+set folder=%userprofile%\desktop\Programs
+:: ========================================
 
 ::we run ninite and then wait for it to close
 REM "%ninite%"
 REM for /f "skip=1 eol=: delims=" %%F in ('dir /b /o-d "%~dp0*.lnk"') do MOVESOMWHERE "%%F"
-@echo on
 REM forfiles /p "%public%\Desktop" /M *.ink /c "cmd /c echo @file" /d +%date:~4%
 REM forfiles /p "%public%\Desktop" /M *.lnk /c ""cmd /c copy @file "%folder%""
 REM forfiles /p "%public%\Desktop" /M *.lnk /c 'cmd /c echo @file'
 REM forfiles /p "%public%\Desktop" /M *.lnk>test
 REM http://stackoverflow.com/questions/17616045/find-files-on-windows-modified-after-a-given-date-using-the-command-line
-@echo off
 cd /d "%public%\desktop"
-for /f "eol=: delims=" %%F in ('forfiles /p "%public%\Desktop" /M *.txt /d +%date:~4%') do move %%F "%folder%"
+forfiles /p "%public%\Desktop" /M *.lnk /d +%date:~4% >nul 2>nul
+REM echo %errorlevel%
+REM @echo on
+if %errorlevel%==1 (
+	echo ninite didnt install nayfin neww
+	pause
+	exit
+)
+REM for /f "eol=: delims=" %%F in ('forfiles /p "%public%\Desktop" /M *.lnk /d +%date:~4%') do move %%F "%folder%"
 pause 
 ::forfile requires windows vista+
 ::https://technet.microsoft.com/en-us/library/cc753551(v=ws.11).aspx
